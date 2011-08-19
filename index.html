@@ -19,15 +19,16 @@
     h1 { font-size: 3.8em; color: #0560cc; margin-bottom: 3px; }
     h1 .small { font-size: 0.4em; }
     h1 a { text-decoration: none }
-    h2 { font-size: 1.5em; color: #0560cc; }
+    h2 { font-size: 1.3em; color: #0560cc; }
     h3 { text-align: center; color: #0560cc; }
-    a { color: #0560cc; }
+    a { color: #000000; }
     .description { font-size: 1.2em; margin-bottom: 30px; margin-top: 30px; font-style: italic;}
     .download { float: right; }
     pre { background: #000; color: #fff; padding: 15px;}
     hr { border: 0; width: 80%; border-bottom: 1px solid #aaa}
     .footer { text-align:center; padding-top:30px; font-style: italic; }
   </style>
+  <script src='https://raw.github.com/cushman/pirotype/master/%CF%80rotype.js'></script>
 </head>
 
 <body>
@@ -35,42 +36,262 @@
 
   <div id="container">
 
-    <div class="download">
-      <a href="http://github.com/cushman/pirotype/zipball/master">
-        <img border="0" width="90" src="http://github.com/images/modules/download/zip.png"></a>
-      <a href="http://github.com/cushman/pirotype/tarball/master">
-        <img border="0" width="90" src="http://github.com/images/modules/download/tar.png"></a>
-    </div>
 
-    <h1><a href="http://github.com/cushman/pirotype">πrotype</a>
-      <span class="small">by <a href="http://github.com/cushman">cushman</a></span></h1>
-
-    <div class="description">
-      prototype mutation stolen from the gods
-    </div>
-
-    <h2>License</h2>
-<p>MIT</p>
-<h2>Authors</h2>
-<p>Adrian Cushman (acushman@gmail.com)<br/><br/>      </p>
-<h2>Contact</h2>
-<p> (acushman@gmail.com)<br/>      </p>
-
-
-    <h2>Download</h2>
-    <p>
-      You can download this project in either
-      <a href="http://github.com/cushman/pirotype/zipball/master">zip</a> or
-      <a href="http://github.com/cushman/pirotype/tarball/master">tar</a> formats.
-    </p>
-    <p>You can also clone the project with <a href="http://git-scm.com">Git</a>
-      by running:
-      <pre>$ git clone git://github.com/cushman/pirotype</pre>
-    </p>
-
-    <div class="footer">
-      get the source code on GitHub : <a href="http://github.com/cushman/pirotype">cushman/pirotype</a>
-    </div>
+      <div id="readme" class="announce instapaper_body md" data-path="/"><span class="name">README.md</span><div class="wikistyle"><h1>πrotype.js</h1> 
+<h2>Demo</h2>
+<p><em>πrotype.js has been loaded on this page. To try it out, just open your JS console.</em></p>
+<h3>JavaScript prototype mutation stolen from the gods</h3> 
+ 
+<p><em>_whyday, 2011</em></p> 
+ 
+<h2>What?</h2> 
+ 
+<pre><code>mother = 
+    name: 'Sue'
+    eyes: 'green'
+    age: 35
+ 
+father =
+    name: 'Jake'
+    hair: 'brown'
+    age: 33
+ 
+child = { name: 'Billy' }.πbind mother, father, -&gt; 
+    console.log "#{@name} has his mother's #{@eyes} eyes and his father's #{@hair} hair."
+child()
+</code></pre> 
+ 
+<p>πrotype just adds a few basic methods to every object which make it conceptually
+easier to modify their prototypes, and let you deal with the idea of prototype
+chains (πchains) as a unit— where πchains are sort of like linked lists of objects.
+Yes, that's a little silly. Happy _whyday!</p> 
+ 
+<h2>_why?</h2> 
+ 
+<p>To be completely honest, I'm not sure either. I've had, and read, several
+conversations in the last week which were highly critical of mutable <code>__proto__</code>.
+The difficulty seems to be that it's very hard to optimize, and no one can think
+of a use for it that's very interesting— so of course it's discouraged, and smart
+people don't play with it, and so in general we try to pretend that JavaScript
+is a classical language and life is kinda boring.</p> 
+ 
+<p>I'm hoping that a few methods that actively encourage you to mess around with
+the object prototype will inspire some people, in the spirit of _whyday, to
+imagine what sorts of unusual, highly non-classical things mutating <code>__proto__</code> 
+can be really good for. And no, I'm not sure there are any... Let's find out 
+together.</p> 
+ 
+<h2>Caveats</h2> 
+ 
+<ol> 
+<li><p>I have only tested πrotype against V8. It should work the same way in any
+implementation which provides <code>__proto__</code> and <code>Object.defineProperty</code>, but no guarantees.</p></li> 
+<li><p>I'm serious about it being hard to optimize. I've done benchmarks that show 10x or worse
+slowdowns vs. boring but optimizable code. As always, you are responsible for the
+speed of your own program. In case that isn't clear enough: Please — <em>I beg of 
+you</em> — do not use this for anything real.</p></li> 
+<li><p>πrotype alters the Object prototype, since every object has a prototype. If that's
+something which makes you squeamish, the concept of πrotype altogether will probably
+baffle you. It may baffle you regardless. That's okay.</p></li> 
+<li><p>To mitigate conflicts, and to be <em>even hipper</em>, all πrotype methods are namespaced 
+under <code>π</code> (Greek small letter pi, <code>U+03C0</code>). πrotype won't load if <code>{}.π</code> is defined.</p></li> 
+</ol><p>(Yes, <code>π</code> in identifier names does not pass JSLint. Neither does accessing <code>__proto__</code>.)</p> 
+ 
+<h2>π</h2> 
+ 
+<p>The single most aggravating part of using prototypes is the name <code>__proto__</code>.
+<code>{}.π</code> is useful shorthand, and may be able to fake it if a future ECMAScript
+standard has finally killed off the last of the true πρmancers, or if <code>__proto__</code> 
+just isn't exposed on your platform.</p> 
+ 
+<pre><code>o =
+    a: 1
+    __proto__:
+        b: 2
+ 
+&gt; o.b, o.c          # 2, undefined 
+&gt; o.π              # { b: 2 }
+&gt; o.π = { c: 3 }   # { c: 3 }
+&gt; o.b, o.c          # undefined, 3 
+</code></pre> 
+ 
+<h2>πdel()</h2> 
+ 
+<p>Since <code>delete</code> doesn't work on <code>__proto__</code>, the <code>{}.πdel()</code> method is provided.
+It simply sets <code>{}.π = Object.prototype</code>, and returns the original <code>π</code> as a
+convenience.</p> 
+ 
+<pre><code>o =
+    a: 1
+    __proto__:
+        b: 2
+&gt; o.b           # 2
+&gt; o.πdel()         # { b: 2 }
+&gt; o.b           # undefined
+&gt; o.π          # Object.prototype
+</code></pre> 
+ 
+<h2>πflatten()</h2> 
+ 
+<p><code>{}.πflatten()</code> returns a new object which has every property of <code>{}</code> defined on it.
+Use this to convert πchains to boring objects.</p> 
+ 
+<pre><code>chain =
+    a: 1
+    __proto__:
+        b: 2
+        __proto__:
+            c: 3
+&gt; chain             # { a: 1 }
+&gt; chain.πflatten() # { a: 1, b: 2, c: 3}
+</code></pre> 
+ 
+<h2>πtail</h2> 
+ 
+<p>One thing you might want to do when you work with πchains is refer to the tail
+of the chain; that is, the last object in the chain before Object.prototype.
+<code>{}.πtail</code> provides this object, while setting it replaces that object in the chain.</p> 
+ 
+<pre><code>chain =
+    a: 1
+    __proto__:
+        b: 2
+        __proto__:
+            c: 3
+            __proto__:
+                d: 4
+ 
+&gt; chain.πtail                      # { d: 4 }
+&gt; chain.πflatten()                 # { a: 1, b: 2, c: 3, d: 4 }
+&gt; chain.πtail = e: 5               # { e: 5 }
+&gt; chain.πflatten()                 # { a: 1, b: 2, c: 3, e: 5 }
+</code></pre> 
+ 
+<p>If <code>chain.π is Object.prototype</code>, then <code>chain.πtail is chain</code> and setting <code>chain.πtail</code> 
+is a no-op (since you're effectively saying to replace <code>chain</code> with a different object.)</p> 
+ 
+<pre><code>&gt; o = a: 1
+&gt; o.πtail = b: 2   # { b: 2 }
+&gt; o.πflatten()     # { a: 1 }
+</code></pre> 
+ 
+<h2>πpush()</h2> 
+ 
+<p><code>{}.πpush o</code> sets <code>{}.πtail.π = o</code>, effectively appending one πchain to another,
+and returns the original <code>{}</code>.</p> 
+ 
+<pre><code>chain =
+    a: 1
+    __proto__:
+        b: 2
+ 
+chain2 =
+    c: 3
+    __proto__:
+        d: 4
+ 
+&gt; chain.πpush chain2   # { a: 1 }
+&gt; chain.πflatten()     # { a: 1, b: 2, c: 3, d: 4 }
+</code></pre> 
+ 
+<h2>πpop()</h2> 
+ 
+<p><code>{}.πpop()</code> returns and removes <code>{}.πtail</code>.</p> 
+ 
+<pre><code>chain =
+    a: 1
+    __proto__:
+        b: 2
+        __proto__:
+            c: 3
+ 
+console.log chain.πpop()       # { c: 3 }
+console.log chain.πflatten()       # { a: 1, b: 2 }
+</code></pre> 
+ 
+<h1>πbind()()</h1> 
+ 
+<p>If you only want to merge two or more chains temporarily, the <code>{}.πbind</code> method
+takes a list of chains and a function, and returns a function. When the returned
+function is called, the chain is assembled, the function called with the chain as
+<code>this</code>, and the chain is disassembled before returning, or in the event of an
+exception.</p> 
+ 
+<pre><code>chain1 =
+    a: 1
+    __proto__:
+        b: 2
+chain2 =
+    c: 3
+    __proto__:
+        d: 4
+chain3 =
+    e: 5
+    __proto__:
+        f: 6
+ 
+chainFlatten = chain1.πbind chain2, chain3, -&gt; @πflatten()
+ 
+&gt; chain1.πflatten(), chain2.πflatten(), chain3.πflatten()    # { a: 1, b: 2 } { c: 3, d: 4 } { e: 5, f: 6 }
+&gt; chainFlatten()                                            # { a: 1, b: 2, c: 3, d: 4, e: 5, f: 6 }
+&gt; chain1.πflatten(), chain2.πflatten(), chain3.πflatten()    # { a: 1, b: 2 } { c: 3, d: 4 } { e: 5, f: 6 }
+</code></pre> 
+ 
+<h2>πcall()</h2> 
+ 
+<p><code>{}.πcall(...)</code> is simply an alias for <code>{}.πbind(...)()</code>.</p> 
+ 
+<pre><code>chain1.πcall chain2, chain3, -&gt; @πflatten()   # { a: 1, b: 2, c: 3, d: 4, e: 5, f: 6 }
+</code></pre> 
+ 
+<h2>πshift()</h2> 
+ 
+<p>These ones I'm not so sure about. The metaphor starts to fall apart at some point...
+For example, it makes no sense for <code>{}.πshift()</code> to return the object in question 
+without a prototype. Instead, it removes the first prototype from the πchain 
+and returns that.</p> 
+ 
+<pre><code>chain =
+    a: 1
+    __proto__:
+        b: 2
+        __proto__:
+            c: 3
+ 
+&gt; chain.πshift()       # { b: 2 }
+&gt; chain.πflatten()     # { a: 1, c: 3 }
+</code></pre> 
+ 
+<h2>πunshift()</h2> 
+ 
+<p>...and <code>{}.πunshift()</code> does the opposite.</p> 
+ 
+<pre><code>chain =
+    a: 1
+    __proto__:
+        c: 3
+ 
+&gt; chain.πunshift { b: 2 }      # { a: 1 }
+&gt; chain.πflatten()             # { a: 1, b: 2, c: 3 }
+</code></pre> 
+ 
+<h3>That's just to get you started.</h3> 
+ 
+<p>I'm sure that some of these methods are practically
+useless, but some of them might have utility, and there are many I haven't thought
+of or decided not to bother with. If this gets you started thinking, don't stop—
+fork me!</p> 
+ 
+<h3>For contributors (if there's anyone out there as crazy as me):</h3> 
+ 
+<p>πrotype is written in <a href="http://www.coffeescript.org/">CoffeeScript</a>. A compiled 
+JavaScript version is provided as a convenience. If you want to fork it, I recommend
+you make your changes in the CoffeeScript— it's unlikely you'll be able to produce
+as well-formed, readable JavaScript (no offense), and even if you can, it's a 
+waste of your time. That's robot work. Personally, I treat the <code>.js</code> as compilation
+output, which it is, and will not accept pull requests on it. Soz.</p> 
+ 
+<p>πrotype is MIT licensed.</p>
 
   </div>
 
