@@ -1,5 +1,9 @@
 
+<<<<<<< HEAD
 # πrotype.js 
+=======
+# πrotype.js # 
+>>>>>>> 07c9ff92eb2fae3f0d653daba3d0cb615f300e1e
 ### JavaScript prototype mutation stolen from the gods ###
 *_whyday, 2011*
 
