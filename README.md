@@ -26,6 +26,8 @@ easier to modify their prototypes, and let you deal with the idea of prototype
 chains (πchains) as a unit— where πchains are sort of like linked lists of objects.
 Yes, that's a little silly. Happy _whyday!
 
+[Try it out right now.](http://cushman.github.com/pirotype/)
+
 ##_why?##
 
 To be completely honest, I'm not sure either. I've had, and read, several
